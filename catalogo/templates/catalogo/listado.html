@@ -1,0 +1,48 @@
+{% extends 'catalogo/base.html' %}
+{% load static %}
+
+{% block titulo %}{% if genero %}{{ genero.nombre }}{% else %}Catálogo{% endif %} — Biblioteca UPB{% endblock %}
+{% block nav_catalogo %}activo{% endblock %}
+
+{% block contenido %}
+<section class="catalogo">
+    <div class="catalogo__encabezado">
+        <h1>{% if genero %}{{ genero.nombre }}{% else %}Catálogo completo{% endif %}</h1>
+        {% if genero and genero.descripcion %}
+        <p class="catalogo__sub">{{ genero.descripcion }}</p>
+        {% endif %}
+    </div>
+
+    <nav class="filtros" aria-label="Filtrar por género">
+        <a href="{% url 'catalogo:listado' %}" class="filtro {% if not genero %}filtro--activo{% endif %}">Todos</a>
+        {% for g in generos %}
+        <a href="{% url 'catalogo:por_genero' g.id %}"
+           class="filtro {% if genero and genero.id == g.id %}filtro--activo{% endif %}">
+            {{ g.nombre }} <span class="filtro__n">{{ g.total_libros }}</span>
+        </a>
+        {% endfor %}
+    </nav>
+
+    <div class="libros">
+        {% for libro in libros %}
+        <article class="libro">
+            <a class="libro__portada" href="{% url 'catalogo:detalle' libro.id %}">
+                <span class="libro__genero">{{ libro.genero.nombre }}</span>
+                <span class="libro__titulo">{{ libro.titulo }}</span>
+                <span class="libro__anio">{{ libro.anio }}</span>
+            </a>
+            <div class="libro__pie">
+                <p class="libro__autor">{{ libro.autor.nombre }}</p>
+                {% if libro.stock > 0 %}
+                <span class="estado estado--disponible">{{ libro.stock }} disponibles</span>
+                {% else %}
+                <span class="estado estado--agotado">Agotado</span>
+                {% endif %}
+            </div>
+        </article>
+        {% empty %}
+        <p class="vacio">No hay libros en esta sección todavía.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

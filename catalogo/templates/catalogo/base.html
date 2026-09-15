@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block titulo %}Biblioteca UPB{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'catalogo/estilos.css' %}">
+</head>
+<body>
+    <header class="site-header">
+        <a class="logo" href="{% url 'catalogo:inicio' %}">
+            <img src="{% static 'catalogo/img/logo-upb.png' %}" alt="Universidad Pontificia Bolivariana">
+        </a>
+        <nav class="nav">
+            <a href="{% url 'catalogo:inicio' %}" class="{% block nav_inicio %}{% endblock %}">Inicio</a>
+            <a href="{% url 'catalogo:listado' %}" class="{% block nav_catalogo %}{% endblock %}">Catálogo</a>
+            <a href="{% url 'catalogo:admin_libros' %}" class="{% block nav_admin %}{% endblock %}">Admin</a>
+        </nav>
+    </header>
+
+    <main class="lienzo">
+        {% if messages %}
+        <ul class="mensajes">
+            {% for message in messages %}
+            <li class="mensaje mensaje--{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% block contenido %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <p>Universidad Pontificia Bolivariana 2026</p>
+        <p>&copy; Todos los derechos reservados</p>
+    </footer>
+</body>
+</html>

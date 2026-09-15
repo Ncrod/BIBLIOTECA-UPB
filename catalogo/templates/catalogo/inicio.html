@@ -1,0 +1,42 @@
+{% extends 'catalogo/base.html' %}
+{% load static %}
+
+{% block titulo %}Biblioteca UPB — Inicio{% endblock %}
+{% block nav_inicio %}activo{% endblock %}
+
+{% block contenido %}
+<section class="hero">
+    <div class="hero__encabezado">
+        <h1>Nuestros libros académicos</h1>
+        <p class="hero__resumen">{{ total_libros }} títulos disponibles en {{ generos|length }} géneros.</p>
+    </div>
+
+    <div class="hero__cuerpo">
+        <figure class="hero__foto">
+            <img src="{% static 'catalogo/img/hero.png' %}"
+                 alt="Estudiantes leyendo en la biblioteca de la UPB">
+        </figure>
+
+        <div class="generos">
+            {% for genero in generos %}
+            <article class="genero">
+                <div class="genero__texto">
+                    <h2 class="genero__nombre">
+                        <a class="genero__enlace" href="{% url 'catalogo:por_genero' genero.id %}">
+                            <span class="genero__cobertura"></span>{{ genero.nombre }}
+                        </a>
+                    </h2>
+                    <span class="chip">{{ genero.total_libros }} Libro{{ genero.total_libros|pluralize }}</span>
+                </div>
+                <span class="genero__link" aria-hidden="true">
+                    Ver mas
+                    <img src="{% static 'catalogo/img/flecha.svg' %}" alt="">
+                </span>
+            </article>
+            {% empty %}
+            <p class="vacio">Todavía no hay géneros cargados en la base de datos.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

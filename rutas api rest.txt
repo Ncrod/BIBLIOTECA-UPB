@@ -1,0 +1,22 @@
+GET http://127.0.0.1:8000/api/autores/
+GET http://127.0.0.1:8000/api/generos/
+GET http://127.0.0.1:8000/api/libros/
+GET http://127.0.0.1:8000/api/libros/?genero=ID_DEL_GENERO
+GET http://127.0.0.1:8000/api/libros/ID_DEL_LIBRO/
+
+POST http://127.0.0.1:8000/api/libros/
+
+PUT http://127.0.0.1:8000/api/libros/ID_DEL_LIBRO/
+
+PATCH http://127.0.0.1:8000/api/libros/ID_DEL_LIBRO/
+
+DELETE http://127.0.0.1:8000/api/libros/ID_DEL_LIBRO/
+
+Para crear en POST, usa Body > raw > JSON:
+
+  {
+    "genero": "ID_DEL_GENERO",
+    "anio": 2024,
+    "stock": 5,
+    "sinopsis": "Texto de prueba"
+  }
