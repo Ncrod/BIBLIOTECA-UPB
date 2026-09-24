@@ -37,6 +37,7 @@ def serializar_libro(libro):
         'anio': libro.anio,
         'stock': libro.stock,
         'sinopsis': libro.sinopsis,
+        'imagen': libro.imagen or '',
         'disponible': libro.disponible,
     }
 
@@ -148,6 +149,7 @@ def api_libro_detalle(request, libro_id):
             'anio': str(libro.anio),
             'stock': str(libro.stock),
             'sinopsis': libro.sinopsis,
+            'imagen': libro.imagen or '',
         }
         datos_actuales.update(datos)
         datos = datos_actuales

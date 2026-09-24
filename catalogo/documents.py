@@ -61,6 +61,7 @@ class Libro(Document):
     anio = IntField(required=True)
     stock = IntField(default=0)
     sinopsis = StringField(default='')
+    imagen = StringField(default='')   # URL de la portada
 
     meta = {
         'collection': 'libros',

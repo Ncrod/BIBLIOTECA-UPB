@@ -93,7 +93,7 @@ def libro_nuevo():
     return Libro()
 
 
-def guardar_libro(libro, titulo, autor, genero, anio, stock, sinopsis):
+def guardar_libro(libro, titulo, autor, genero, anio, stock, sinopsis, imagen=''):
     """Rellena el libro (nuevo o existente) y lo guarda."""
     libro.titulo = titulo
     libro.autor = autor
@@ -101,6 +101,7 @@ def guardar_libro(libro, titulo, autor, genero, anio, stock, sinopsis):
     libro.anio = anio
     libro.stock = stock
     libro.sinopsis = sinopsis
+    libro.imagen = imagen
 
     try:
         libro.save()

@@ -61,4 +61,8 @@ def limpiar_libro(datos):
 
     limpios['sinopsis'] = datos.get('sinopsis', '').strip()
 
+    limpios['imagen'] = datos.get('imagen', '').strip()
+    if limpios['imagen'] and not limpios['imagen'].startswith(('http://', 'https://')):
+        errores.append('La imagen debe ser una URL http(s).')
+
     return limpios, errores
