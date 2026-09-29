@@ -101,7 +101,11 @@ def api_libros(request):
             except repositorios.NoEncontrado:
                 return respuesta_error('Genero no encontrado.', estado=404)
 
-        libros = repositorios.listar_libros(genero=genero)
+        limite = request.GET.get('limite')
+        libros = repositorios.listar_libros(
+            genero=genero,
+            limite=int(limite) if limite and limite.isdigit() else None,
+        )
         return JsonResponse({
             'resultados': [serializar_libro(libro) for libro in libros],
         })

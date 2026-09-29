@@ -42,9 +42,12 @@ def listar_generos_con_conteo():
     """Cada género con cuántos libros tiene (no hay JOIN en Mongo, se cuenta a mano)."""
     generos = listar_generos()
 
+    # as_pymongo() devuelve dicts crudos: el id del género queda como
+    # ObjectId sin desreferenciar, así que esto es 1 sola consulta en vez
+    # de N (una por libro) contra Atlas.
     conteos = {}
-    for libro in Libro.objects().only('genero'):
-        gid = libro.genero.id
+    for libro in Libro.objects().only('genero').as_pymongo():
+        gid = libro['genero']
         conteos[gid] = conteos.get(gid, 0) + 1
 
     for genero in generos:
@@ -72,9 +75,14 @@ def contar_libros():
     return Libro.objects().count()
 
 
-def listar_libros(genero=None):
+def listar_libros(genero=None, limite=None):
     libros = Libro.objects(genero=genero) if genero else Libro.objects()
-    return libros.order_by('titulo')
+    libros = libros.order_by('titulo')
+    if limite:
+        libros = libros[:limite]
+    # select_related() trae autor y genero en pocas consultas agrupadas
+    # (en vez de una por cada libro) antes de que la vista los serialice.
+    return libros.select_related()
 
 
 def obtener_libro(libro_id):
@@ -85,7 +93,11 @@ def obtener_libro(libro_id):
 
 
 def libros_relacionados(libro, limite=4):
-    return Libro.objects(genero=libro.genero).filter(pk__ne=libro.pk)[:limite]
+    return (
+        Libro.objects(genero=libro.genero)
+        .filter(pk__ne=libro.pk)[:limite]
+        .select_related()
+    )
 
 
 def libro_nuevo():
